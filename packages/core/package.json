@@ -1,6 +1,6 @@
 {
   "name": "venatu",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "files": [
     "dist",
@@ -63,9 +63,9 @@
     "solid-swr-store": "^0.10.7",
     "solid-use": "^0.7.0",
     "swr-store": "^0.10.6",
-    "venatu-meta": "0.0.0",
-    "venatu-router": "0.0.0",
-    "venatu-root": "0.0.0"
+    "venatu-meta": "0.0.1",
+    "venatu-root": "0.0.1",
+    "venatu-router": "0.0.1"
   },
   "exports": {
     "./meta": {

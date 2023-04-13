@@ -20,8 +20,9 @@
     "vite-plugin-solid": "^2.7.0"
   },
   "dependencies": {
-    "venatu": "0.0.0",
     "solid-js": "^1.7.3",
-    "thaler": "^0.5.1"
-  }
+    "thaler": "^0.5.1",
+    "venatu": "0.0.1"
+  },
+  "version": "0.0.1"
 }
