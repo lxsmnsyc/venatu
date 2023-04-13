@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/src/main.css" rel="stylesheet" />
+    <!--meta:outlet-->
+  </head>
+  <body>
+    <div id="root" class="flex items-center justify-center bg-gradient-to-l from-sky-400 to-indigo-600 min-h-screen">
+      <!--ssr:outlet-->
+    </div>
+    <!--ssr:data-->
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
+</html>

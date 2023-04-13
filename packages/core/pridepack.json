@@ -1,0 +1,10 @@
+{
+  "target": "es2018",
+  "entrypoints": {
+    "./meta": "meta/index.ts",
+    "./root": "root/index.ts",
+    "./router": "router/index.ts",
+    "./client": "client/index.ts",
+    "./server": "server/index.ts"
+  }
+}
