@@ -30,7 +30,8 @@ function createPage<P>(
   Comp: Page<P>,
 ): Page<P> {
   return function CustomPage(props: PageProps<P>) {
-    const ctx = useContext(Data)!;
+    const ctx = useContext(Data);
+    assert(ctx, new Error('Missing Data'));
     const router = useRouter();
     const yieldFallback = useFallback();
     const data = useCache(

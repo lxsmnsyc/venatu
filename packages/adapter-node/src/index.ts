@@ -95,7 +95,7 @@ export function createNodeAdapter(options: ServerOptions) {
     const app = h3.createApp();
 
     const targetPath = path.join(process.cwd(), options.assets);
-    app.use(h3.fromNodeMiddleware(sirv(targetPath)));
+    app.use('/assets', h3.fromNodeMiddleware(sirv(targetPath)));
 
     app.use('*', h3.eventHandler(async (event) => {
       const response = await handler(await convertIncomingMessageToRequest(event));

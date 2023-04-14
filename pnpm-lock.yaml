@@ -28,6 +28,9 @@ importers:
       venatu:
         specifier: 0.0.1
         version: link:../../packages/core
+      venatu-adapter-node:
+        specifier: 0.0.1
+        version: link:../../packages/adapter-node
     devDependencies:
       '@types/node':
         specifier: ^18.15.11
