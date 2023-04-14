@@ -15,7 +15,7 @@ export default createServerEntry({
       path: './routes',
       imports: import.meta.glob<true, string, Load<any, any>>(
         './routes/**/*.tsx',
-        { import: 'default', eager: true },
+        { import: 'load', eager: true },
       ),
     },
     apis: {
