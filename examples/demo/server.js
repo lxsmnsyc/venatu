@@ -1,23 +1,15 @@
 import { createServer } from 'venatu/server';
 
 createServer({
-  port: 3000,
   env: process.env.NODE_ENV,
-  dist: {
-    client: {
-      assets: './dist/client/assets',
-      entry: './dist/client/index.html',
-    },
-    server: {
-      entry: () => import('./dist/server/entry-server.js'),
-    },
+  prod: {
+    // TODO
   },
-  build: {
-    server: {
-      entry: './src/entry-server.tsx',
+  dev: {
+    port: 3000,
+    build: {
+      server: './src/entry-server.tsx',
+      client: './index.html',
     },
-    client: {
-      entry: './index.html',
-    },
-  },
+  }
 });
