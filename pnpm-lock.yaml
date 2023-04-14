@@ -145,9 +145,6 @@ importers:
       solid-js:
         specifier: ^1.7.3
         version: 1.7.3
-      thaler:
-        specifier: ^0.5.1
-        version: 0.5.1
       tslib:
         specifier: ^2.4.1
         version: 2.5.0

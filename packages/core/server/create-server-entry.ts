@@ -1,5 +1,4 @@
 import { renderToStream } from 'solid-js/web';
-import { handleRequest } from 'thaler/server';
 import { serializeAsync } from 'seroval';
 import { JSX, createComponent } from 'solid-js';
 import { Load, LoadResult } from 'venatu-router';
@@ -39,10 +38,6 @@ export function createServerEntry(options: ServerEntryOptions): ServerEntryHandl
     pages: options.pages,
   });
   return async function handle(request: Request): Promise<HandleResult | Response> {
-    const matched = await handleRequest(request);
-    if (matched) {
-      return matched;
-    }
     const url = new URL(request.url);
     const loaders = getLoader(url);
     if (url.searchParams.has('.get')) {

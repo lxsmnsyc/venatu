@@ -44,7 +44,6 @@
     "eslint-config-lxsmnsyc": "^0.5.1",
     "pridepack": "2.4.4",
     "solid-js": "^1.7.3",
-    "thaler": "^0.5.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.4",
     "vite": "^4.2.1",
@@ -52,7 +51,6 @@
   },
   "peerDependencies": {
     "solid-js": "^1.7",
-    "thaler": "^0.5.1",
     "vite": "^4.2.1"
   },
   "dependencies": {
