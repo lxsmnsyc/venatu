@@ -175,15 +175,30 @@ export type LoadResult<T> =
 export type Load<T, P extends RouterParams> = (
   request: Request,
   params: P,
-) => (Promise<LoadResult<T>>);
+) => (Promise<LoadResult<T>> | LoadResult<T>);
 export type LoadRoute = Route<Load<any, any>>;
 export type LoadRouter = RouterNode<Load<any, any>>;
 
-export interface SSRPage<T, P extends RouterParams> {
-  default: Page<T>;
-  load?: Load<T, P>;
-}
+export type APIHandler<P extends RouterParams> = (
+  request: Request,
+  params: P,
+) => Response | Promise<Response>;
+
+export type APIRoute = Route<APIHandler<any>>;
+export type APIRouter = RouterNode<APIHandler<any>>;
 
 export function createPage<P>(page: Page<P>): Page<P> {
   return page;
+}
+
+export function createLoader<T, P extends RouterParams>(
+  loader: Load<T, P>,
+): Load<T, P> {
+  return loader;
+}
+
+export function createAPIHandler<P extends RouterParams>(
+  loader: APIHandler<P>,
+): APIHandler<P> {
+  return loader;
 }
