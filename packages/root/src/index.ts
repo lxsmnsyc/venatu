@@ -11,6 +11,7 @@ import {
   useMeta,
 } from 'venatu-meta';
 import {
+  APIHandler,
   createRouterTree,
   Load,
   LoadResult,
@@ -80,40 +81,61 @@ function createPage<P>(
 }
 
 function normalizeRoute(path: string, offset: number): string {
-  const base = path.substring(offset, path.length - 4);
+  const base = path.substring(offset).replace(/\.[^/.]+$/, '');
   if (base.endsWith('/index')) {
-    if (base === '/index') {
-      return '/';
-    }
-    return base.substring(0, base.length - 6);
+    return base.replace(/\/index$/, '/');
   }
   return base;
+}
+
+export interface APIConfig {
+  routes: {
+    path: string;
+    imports: Record<string, APIHandler<any>>;
+    normalize?: (path: string) => string;
+  };
+}
+
+export function defineAPIRouter(config: APIConfig) {
+  const offset = config.routes.path.length;
+  const rawAPI = Object.entries(config.routes.imports)
+    .map(([key, value]) => {
+      const normalKey = config.routes.normalize
+        ? config.routes.normalize(key)
+        : key;
+      const trueKey = normalizeRoute(normalKey, offset);
+      return {
+        path: trueKey,
+        value,
+      };
+    });
+
+  const apis = createRouterTree(rawAPI);
+
+  return (url: URL) => matchRoute(apis, url.pathname);
 }
 
 export interface LoaderConfig {
   routes: {
     path: string;
     imports: Record<string, Load<any, any>>;
-  };
-}
-
-export interface RendererConfig {
-  routes: {
-    path: string;
-    imports: Record<string, () => JSX.Element>;
-  };
-  pages: {
-    404: () => JSX.Element;
+    normalize?: (path: string) => string;
   };
 }
 
 export function defineLoaderRouter(config: LoaderConfig) {
   const offset = config.routes.path.length;
   const rawLoaders = Object.entries(config.routes.imports)
-    .map(([key, value]) => ({
-      path: normalizeRoute(key, offset),
-      value,
-    }));
+    .map(([key, value]) => {
+      const normalKey = config.routes.normalize
+        ? config.routes.normalize(key)
+        : key;
+      const trueKey = normalizeRoute(normalKey, offset);
+      return {
+        path: trueKey,
+        value,
+      };
+    });
 
   const loaders = createRouterTree(rawLoaders);
 
@@ -138,13 +160,30 @@ export function Root<T>(props: RootProps<T>) {
   });
 }
 
+export interface RendererConfig {
+  routes: {
+    path: string;
+    imports: Record<string, () => JSX.Element>;
+    normalize?: (path: string) => string;
+  };
+  pages: {
+    404: () => JSX.Element;
+  };
+}
+
 export function definePageRouter(config: RendererConfig) {
   const offset = config.routes.path.length;
   const rawPages = Object.entries(config.routes.imports)
-    .map(([key, value]) => ({
-      path: normalizeRoute(key, offset),
-      value: createPage(value),
-    }));
+    .map(([key, value]) => {
+      const normalKey = config.routes.normalize
+        ? config.routes.normalize(key)
+        : key;
+      const trueKey = normalizeRoute(normalKey, offset);
+      return {
+        path: trueKey,
+        value: createPage(value),
+      };
+    });
 
   const pages = createRouterTree(rawPages);
 

@@ -1,24 +1,25 @@
 import { renderToStream } from 'solid-js/web';
 import { serializeAsync } from 'seroval';
-import { JSX, createComponent } from 'solid-js';
-import { Load, LoadResult } from 'venatu-router';
+import { createComponent } from 'solid-js';
+import { LoadResult } from 'venatu-router';
 import { renderMeta } from 'venatu-meta';
-import { Root, defineLoaderRouter, definePageRouter } from 'venatu-root';
+import {
+  APIConfig,
+  LoaderConfig,
+  RendererConfig,
+  Root,
+  defineAPIRouter,
+  defineLoaderRouter,
+  definePageRouter,
+} from 'venatu-root';
 
 export interface ServerEntryOptions {
   routes: {
-    pages: {
-      path: string;
-      imports: Record<string, () => JSX.Element>;
-    };
-    loaders: {
-      path: string;
-      imports: Record<string, Load<any, any>>;
-    };
+    pages: RendererConfig['routes'];
+    loaders: LoaderConfig['routes'];
+    apis: APIConfig['routes'];
   };
-  pages: {
-    404: () => JSX.Element;
-  }
+  pages: RendererConfig['pages']
 }
 
 export interface HandleResult {
@@ -30,6 +31,9 @@ export interface HandleResult {
 export type ServerEntryHandle = (request: Request) => Promise<HandleResult | Response>;
 
 export function createServerEntry(options: ServerEntryOptions): ServerEntryHandle {
+  const getAPI = defineAPIRouter({
+    routes: options.routes.apis,
+  });
   const getLoader = defineLoaderRouter({
     routes: options.routes.loaders,
   });
@@ -39,6 +43,13 @@ export function createServerEntry(options: ServerEntryOptions): ServerEntryHandl
   });
   return async function handle(request: Request): Promise<HandleResult | Response> {
     const url = new URL(request.url);
+    const apis = getAPI(url);
+    if (apis.length) {
+      const last = apis[apis.length - 1];
+      if (last.value) {
+        return last.value(request, last.params);
+      }
+    }
     const loaders = getLoader(url);
     if (url.searchParams.has('.get')) {
       if (loaders.length) {
@@ -48,11 +59,17 @@ export function createServerEntry(options: ServerEntryOptions): ServerEntryHandl
           return new Response(await serializeAsync(data), {
             status: 200,
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'text/plain',
             },
           });
         }
       }
+      return new Response(await serializeAsync({ props: undefined }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+      });
     }
     let data: LoadResult<any>[] = [];
 
