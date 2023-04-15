@@ -147,6 +147,9 @@ export interface PageProps<P> {
   children?: JSX.Element;
 }
 
+export type InferPageProps<T extends (...args: any[]) => any> =
+ ReturnType<T> extends LoadResult<infer P> ? PageProps<P> : PageProps<never>;
+
 export interface Page<P> {
   (props: PageProps<P>): JSX.Element;
 }
