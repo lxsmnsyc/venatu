@@ -179,7 +179,7 @@ export type LoadResult<T> =
   | NotFoundResult
   | RedirectResult;
 
-export type Load<T, P extends RouterParams = Record<any, any>> = (
+export type Load<T, P extends RouterParams = RouterParams> = (
   request: Request,
   params: P,
 ) => (Promise<LoadResult<T>> | LoadResult<T>);
