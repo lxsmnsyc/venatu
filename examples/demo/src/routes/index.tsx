@@ -1,5 +1,5 @@
 import { JSX, Show } from 'solid-js';
-import { Link, LoadResult, PageProps } from 'venatu/router';
+import { InferPageProps, Link, LoadResult } from 'venatu/router';
 
 export function load(): LoadResult<string> {
   return {
@@ -11,7 +11,7 @@ export function load(): LoadResult<string> {
   };
 }
 
-export default function Index(props: PageProps<string>): JSX.Element {
+export default function Index(props: InferPageProps<typeof load>): JSX.Element {
   return (
     <div class="p-4 rounded-lg bg-indigo-900 bg-opacity-25 flex flex-col space-y-4">
       <span class="text-2xl text-white font-sans">
