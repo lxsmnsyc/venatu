@@ -2,6 +2,8 @@
 
 > Dead-simple Vite SSR for SolidJS
 
+## 🚧 UNDER CONSTRUCTION 🚧
+
 ## Install
 
 ```bash
