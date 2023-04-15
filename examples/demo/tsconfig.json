@@ -5,6 +5,7 @@
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
     "strict": true,
+    "types": ["vite/client"],
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
