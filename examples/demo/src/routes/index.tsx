@@ -1,15 +1,13 @@
 import { JSX, Show } from 'solid-js';
-import { InferPageProps, Link, LoadResult } from 'venatu/router';
+import { InferPageProps, Link, Load } from 'venatu/router';
 
-export function load(): LoadResult<string> {
-  return {
-    props: 'Vite SSR + Solid SPA',
-    meta: {
-      title: 'Vite SSR + Solid SPA',
-      description: 'Home page of Vite SSR + Solid SPA',
-    },
-  };
-}
+export const load: Load<string> = () => ({
+  props: 'Vite SSR + Solid SPA',
+  meta: {
+    title: 'Vite SSR + Solid SPA',
+    description: 'Home page of Vite SSR + Solid SPA',
+  },
+});
 
 export default function Index(props: InferPageProps<typeof load>): JSX.Element {
   return (
