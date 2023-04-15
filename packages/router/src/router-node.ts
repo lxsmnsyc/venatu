@@ -151,7 +151,7 @@ type TPageProps<U> = U extends LoadResult<infer P> ? PageProps<P> : PageProps<ne
 
 export type InferPageProps<T extends (...args: any[]) => any> =
  T extends Load<infer R> ?
-  R extends Promise<infer A> ? PageProps<A> : PageProps<R> :
+  PageProps<Awaited<R>> :
    ReturnType<T> extends Promise<infer U> ? TPageProps<U> : TPageProps<ReturnType<T>>;
 
 export interface Page<P> {
