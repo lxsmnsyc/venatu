@@ -147,8 +147,12 @@ export interface PageProps<P> {
   children?: JSX.Element;
 }
 
+type TPageProps<U> = U extends LoadResult<infer P> ? PageProps<P> : PageProps<never>;
+
 export type InferPageProps<T extends (...args: any[]) => any> =
- ReturnType<T> extends LoadResult<infer P> ? PageProps<P> : PageProps<never>;
+ T extends Load<infer R> ?
+  PageProps<Awaited<R>> :
+   ReturnType<T> extends Promise<infer U> ? TPageProps<U> : TPageProps<ReturnType<T>>;
 
 export interface Page<P> {
   (props: PageProps<P>): JSX.Element;
@@ -175,10 +179,11 @@ export type LoadResult<T> =
   | NotFoundResult
   | RedirectResult;
 
-export type Load<T, P extends RouterParams> = (
+export type Load<T, P extends RouterParams = RouterParams> = (
   request: Request,
   params: P,
 ) => (Promise<LoadResult<T>> | LoadResult<T>);
+
 export type LoadRoute = Route<Load<any, any>>;
 export type LoadRouter = RouterNode<Load<any, any>>;
 
